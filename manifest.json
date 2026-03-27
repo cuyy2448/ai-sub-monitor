@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "AI Usage Monitor",
+  "version": "0.3.0",
+  "description": "Monitor AI subscription usage (Claude, ChatGPT Codex, Kimi Code) in one dashboard with low-usage alerts.",
+  "permissions": ["storage", "alarms", "notifications"],
+  "host_permissions": [
+    "https://claude.ai/*",
+    "https://chatgpt.com/*",
+    "https://kimi.com/*",
+    "https://www.kimi.com/*",
+    "https://kimi.ai/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/settings/usage*"],
+      "js": ["content_scripts/claude.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://chatgpt.com/codex/settings/usage*"],
+      "js": ["content_scripts/codex.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://kimi.com/*",
+        "https://www.kimi.com/*",
+        "https://kimi.com/code/*",
+        "https://www.kimi.com/code/*",
+        "https://kimi.com/code/console*",
+        "https://www.kimi.com/code/console*"
+      ],
+      "js": ["content_scripts/kimi.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
